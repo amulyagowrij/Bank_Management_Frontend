@@ -1,0 +1,65 @@
+.box-container {
+  font-family: "Helvetica Neue", "sans-serif";
+  color: #c5c5c51b;
+
+  .login-container {
+    height: 65vh;
+    width: 30vw;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    h1 {
+      color: #000;
+    }
+    .input-container {
+      width: 100%;
+
+      .user-dropdown,
+      .role-dropdown {
+        width: 80%;
+        height: 30px;
+        margin-bottom: 35px;
+        padding: 3px 10px;
+        border-radius: 8px;
+        &:focus {
+          outline: 1px solid #c5c5c5;
+        }
+      }
+      .username,
+      .password {
+        width: 75%;
+        height: 30px;
+        margin-bottom: 35px;
+        padding: 3px 10px;
+        border: 1px solid black;
+        border-radius: 8px;
+
+        &:focus {
+          outline: 1px solid #c5c5c5;
+        }
+      }
+      div {
+        input {
+          &::placeholder {
+            color: #000;
+          }
+        }
+      }
+
+      .primary-button {
+        width: 20%;
+        background-color: #126bc5;
+        color: #fff;
+        font-weight: bold;
+
+        &:hover {
+          background-color: #ffffff;
+          color: #000;
+          border: 1px solid #000;
+        }
+      }
+    }
+  }
+}
