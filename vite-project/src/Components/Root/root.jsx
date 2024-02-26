@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import "./root.scss";
 import { useState } from "react";
-const Root = () => {
-  const [userName, setUserName] = useState("");
-  const [userType, setUserType] = useState("");
+import axios from "axios";
 
-  // State for the second dropdown (if needed)
+let LOGIN_URL = "http://localhost:8000/login";
+
+const Root = () => {
+  const [user_userName, setUser_UserName] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [userType, setUserType] = useState("");
   const [roleType, setRoleType] = useState("");
 
   const navigate = useNavigate();
@@ -15,14 +18,46 @@ const Root = () => {
     External: ["Customer", "Merchant/Organisation"],
   };
 
-  const handleSubmit = (e) => {
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target);
-    const userType = e.target[0].value;
-    const roleType = e.target[1].value;
-    const username = e.target[2].value;
-    const password = e.target[3].value;
-    console.log(userType, roleType, username, password);
+    // check all fields filled out
+    if (user_userName === "" || userPassword === "") {
+      alert("Login failed. Please fill out all fields");
+      return;
+    }
+
+    // validate login
+    axios({
+      method: "post",
+      url: LOGIN_URL,
+      data: {
+        user_name: user_userName,
+        password: userPassword,
+      },
+    }).then(
+      (response) => {
+        sessionStorage.setItem("userid", response.data.userid);
+        sessionStorage.setItem("name", response.data.name);
+        sessionStorage.setItem("user_userName", response.data.email);
+        sessionStorage.setItem("roleType", response.data.role);
+        sessionStorage.setItem("userType", response.data.user_type);
+        console.log(sessionStorage);
+        if (response.status === 200) {
+          alert(`Login successful`);
+          navigate({
+            pathname: "../" + userType.toLowerCase() + "user",
+          });
+        } else {
+          alert(`Login failed. Please check your information and try again`);
+        }
+      },
+      (error) => {
+        console.log(error);
+        alert(
+          `Login failed: ${error.response.data}. Please check your information and try again`
+        );
+      }
+    );
   };
 
   const handleClick = () => {
@@ -33,7 +68,11 @@ const Root = () => {
       <div className="box-container">
         <div className="login-container">
           <h1>Login</h1>
-          <form className="input-container" onSubmit={handleSubmit}>
+          <form
+            className="input-container"
+            onSubmit={handleLoginSubmit}
+            method="post"
+          >
             <div>
               <select
                 value={userType}
@@ -61,13 +100,21 @@ const Root = () => {
               )}
             </div>
             <div>
-              <input className="username" type="text" placeholder="Username" />
+              <input
+                value={user_userName}
+                className="username"
+                type="text"
+                placeholder="Username"
+                onChange={(e) => setUser_UserName(e.target.value)}
+              />
             </div>
             <div>
               <input
+                value={userPassword}
                 className="password"
                 type="password"
                 placeholder="Password"
+                onChange={(e) => setUserPassword(e.target.value)}
               />
             </div>
             <button className="primary-button" type="submit">

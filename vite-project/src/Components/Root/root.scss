@@ -1,6 +1,10 @@
 .box-container {
   font-family: "Helvetica Neue", "sans-serif";
   color: #c5c5c51b;
+  display: flex; /* Use flexbox to align children */
+  justify-content: center; /* Center children horizontally */
+  align-items: center; /* Center children vertically */
+  min-height: 100vh;
 
   .login-container {
     height: 65vh;
