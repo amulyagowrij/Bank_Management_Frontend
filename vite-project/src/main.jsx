@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
+// import App from "./App.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Root from "../src/views/Root/root.jsx";
-import Registration from "../src/views/Registration/registration.jsx";
+import Root from "./Components/Root/root.jsx";
+import Registration from "./Components/Registration/registration.jsx";
+import ExternalUser from "./Components/ExternalUser/externaluserhome.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/registration",
     element: <Registration />,
+  },
+  {
+    path: "/externaluser",
+    element: <ExternalUser />,
   },
 ]);
 
