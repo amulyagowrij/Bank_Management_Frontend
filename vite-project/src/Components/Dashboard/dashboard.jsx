@@ -4,6 +4,7 @@ import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
 import { ExternalUserNavbarData } from "../ExternalUser/externalusernavbardata";
+import { InternalUserNavbarData } from "../InternalUser/internalusernavbardata";
 import { IconContext } from "react-icons";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -11,7 +12,9 @@ const Dashboard = (props) => {
   const [sidebar, setsidebar] = useState(false);
   const navigate = useNavigate();
 
-  let role = props.role;
+  //   let role = props.role;
+  //   let role = "internaluser";
+  let role = "externaluser";
 
   const showSideBar = () => {
     setsidebar(!sidebar);
@@ -39,6 +42,17 @@ const Dashboard = (props) => {
             </li>
             {role === "externaluser"
               ? ExternalUserNavbarData.map((item, index) => {
+                  return (
+                    <li key={index} className={item.class}>
+                      <Link to={item.path}>
+                        {item.icon}
+                        <span>{item.title}</span>
+                      </Link>
+                    </li>
+                  );
+                })
+              : role === "internaluser"
+              ? InternalUserNavbarData.map((item, index) => {
                   return (
                     <li key={index} className={item.class}>
                       <Link to={item.path}>
