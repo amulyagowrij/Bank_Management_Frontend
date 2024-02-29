@@ -37,7 +37,6 @@ const Registration = () => {
       return;
     }
 
-    // check password (any parameters, equal to confirm) - say unsuccessful if it is unsuccessful
     if (userPassword !== confirmPassword) {
       alert("Registration failed. Passwords do not match.");
       return;

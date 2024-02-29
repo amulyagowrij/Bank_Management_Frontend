@@ -36,14 +36,17 @@ const Root = () => {
       },
     }).then(
       (response) => {
-        sessionStorage.setItem("userid", response.data.userid);
-        sessionStorage.setItem("name", response.data.name);
-        sessionStorage.setItem("user_userName", response.data.email);
-        sessionStorage.setItem("roleType", response.data.role);
-        sessionStorage.setItem("userType", response.data.user_type);
-        console.log(sessionStorage);
         if (response.status === 200) {
           alert(`Login successful`);
+
+          console.log(response.data);
+          sessionStorage.setItem("userid", response.data.user_id);
+          sessionStorage.setItem("name", response.data.name);
+          sessionStorage.setItem("user_userName", response.data.user_name);
+          sessionStorage.setItem("roleType", response.data.user_role);
+          sessionStorage.setItem("userType", response.data.user_type);
+          console.log(sessionStorage);
+
           navigate({
             pathname: "../" + userType.toLowerCase() + "user",
           });
