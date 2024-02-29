@@ -1,0 +1,61 @@
+.bank-page {
+  display: flex;
+  flex-direction: column;
+  font-family: "Arial", sans-serif;
+  width: 50vw;
+}
+
+.bank-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  text-align: center;
+}
+
+.bank-sidebar {
+  background-color: #333;
+  color: white;
+  padding: 15px;
+}
+
+.bank-content {
+  padding: 20px;
+}
+
+.user-info {
+  background-color: #126bc5;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.transaction-history {
+  background-color: #fff;
+  padding: 20px;
+}
+
+.transaction-history table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transaction-history th,
+.transaction-history td {
+  text-align: centre;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  height: 35px;
+}
+
+.transaction-history th {
+  background-color: #126bc5;
+  color: white;
+}
+
+.type {
+  width: 15px;
+  background-color: #bcf0be;
+  border-radius: 10%;
+  opacity: 0.8;
+  color: #42b947;
+  height: 2px;
+}

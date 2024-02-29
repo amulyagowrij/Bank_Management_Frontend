@@ -4,9 +4,9 @@ import ReactDOM from "react-dom/client";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Dashboard from "../Dashboard/dashboard";
-import "./externaluserhome.css";
+import "./internaluserhome.css";
 
-export default function ExternalUser() {
+export default function InternalUser() {
   const userInfo = {
     name: "Motu Patlu",
     accountNumber: "131019",
@@ -42,7 +42,6 @@ export default function ExternalUser() {
             <h1>Hi, {userInfo.name}</h1>
             <p>Account Number: {userInfo.accountNumber}</p>
             <p>Balance: ${userInfo.balance.toFixed(2)}</p>
-            <button className="edit_profile">Edit Profile</button>
           </section>
           <section className="transaction-history">
             <h2>Transaction History</h2>

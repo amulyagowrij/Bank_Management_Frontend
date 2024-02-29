@@ -3,28 +3,28 @@ import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
 
-export const ExternalUserNavbarData = [
+export const InternalUserNavbarData = [
   {
     title: "Home",
-    path: "/externaluser",
+    path: "/internaluser",
     icon: <AiIcons.AiFillHome />,
     class: "nav-text",
   },
   {
-    title: "Transfer Funds",
-    path: "/externaluser/transferfunds",
+    title: "View user profiles",
+    path: "/internaluser/viewuserprofiles",
     icon: <AiIcons.AiOutlineTransaction />,
     class: "nav-text",
   },
   {
-    title: "Home",
-    path: "/externaluser",
+    title: "Authorize transactions",
+    path: "/internaluser/authorizetransactions",
     icon: <AiIcons.AiFillHome />,
     class: "nav-text",
   },
   {
     title: "Home",
-    path: "/externaluser",
+    path: "/internaluser",
     icon: <AiIcons.AiFillHome />,
     class: "nav-text",
   },

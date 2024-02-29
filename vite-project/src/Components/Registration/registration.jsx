@@ -46,7 +46,6 @@ const Registration = () => {
     // send data to backend, give confirmation if successful, and return to login page
     axios({
       method: "post",
-      headers: { "Content-Type": "application/json" },
       url: REGISTRATION_URL,
       data: {
         name: userName,
