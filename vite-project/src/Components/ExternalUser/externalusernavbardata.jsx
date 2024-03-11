@@ -17,14 +17,8 @@ export const ExternalUserNavbarData = [
     class: "nav-text",
   },
   {
-    title: "Home",
-    path: "/externaluser",
-    icon: <AiIcons.AiFillHome />,
-    class: "nav-text",
-  },
-  {
-    title: "Home",
-    path: "/externaluser",
+    title: "Transaction History",
+    path: "/externaluser/transactionhistory",
     icon: <AiIcons.AiFillHome />,
     class: "nav-text",
   },

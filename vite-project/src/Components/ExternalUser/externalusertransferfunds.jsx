@@ -39,6 +39,8 @@ const ExternalUserTransferFunds = () => {
           alert(`Funds transfer failed. Check Destination account number`);
         } else if (error.response.data["amount"]) {
           alert(`Funds transfer failed. Check amount`);
+        } else if (error.response.data["message"]) {
+          alert(`${error.response.data["message"]}`);
         }
       }
     );

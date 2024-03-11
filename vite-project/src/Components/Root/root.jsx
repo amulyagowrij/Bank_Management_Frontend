@@ -42,9 +42,15 @@ const Root = () => {
           console.log(response.data);
           sessionStorage.setItem("userid", response.data.user_id);
           sessionStorage.setItem("name", response.data.name);
+          sessionStorage.setItem("name", response.data.name);
           sessionStorage.setItem("user_userName", response.data.user_name);
           sessionStorage.setItem("roleType", response.data.user_role);
           sessionStorage.setItem("userType", response.data.user_type);
+          sessionStorage.setItem(
+            "accountNumber",
+            response.data.account.account_number
+          );
+          sessionStorage.setItem("balance", response.data.account.balance);
           console.log(sessionStorage);
 
           navigate({

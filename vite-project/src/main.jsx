@@ -7,6 +7,7 @@ import Root from "./Components/Root/root.jsx";
 import Registration from "./Components/Registration/registration.jsx";
 import ExternalUser from "./Components/ExternalUser/externaluserhome.jsx";
 import ExternalUserTransferFunds from "./Components/ExternalUser/externalusertransferfunds.jsx";
+import ExternalUserTransactionHistory from "./Components/ExternalUser/externalusertransactionhistory.jsx";
 import InternalUser from "./Components/InternalUser/internaluserhome.jsx";
 import InternalUserViewUserProfiles from "./Components/InternalUser/internaluserviewuserprofiles.jsx";
 import InternalUserAuthorizeTransactions from "./Components/InternalUser/internaluserauthorizetransactions.jsx";
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/externaluser/transferfunds",
     element: <ExternalUserTransferFunds />,
+  },
+  {
+    path: "/externaluser/transactionhistory",
+    element: <ExternalUserTransactionHistory />,
   },
   {
     path: "/internaluser",
