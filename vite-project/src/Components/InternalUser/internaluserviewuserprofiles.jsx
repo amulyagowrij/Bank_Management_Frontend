@@ -3,7 +3,7 @@ import axios from "axios";
 import "./internaluserviewuserprofiles.scss";
 import Dashboard from "../Dashboard/dashboard";
 
-let VIEW_PROFILE_URL = "http://localhost:8000/internaluser/viewuserprofiles";
+let VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
 let DELETE_ACCOUNT_URL = "http://localhost:8000/internaluser/deleteaccount";
 // const data = [
 //   {

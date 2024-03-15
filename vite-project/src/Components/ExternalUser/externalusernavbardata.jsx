@@ -11,6 +11,12 @@ export const ExternalUserNavbarData = [
     class: "nav-text",
   },
   {
+    title: "Profile",
+    path: "/externaluser/editprofile",
+    icon: <FaIcons.FaUser />,
+    class: "nav-text",
+  },
+  {
     title: "Transfer Funds",
     path: "/externaluser/transferfunds",
     icon: <AiIcons.AiOutlineTransaction />,
@@ -20,6 +26,12 @@ export const ExternalUserNavbarData = [
     title: "Transaction History",
     path: "/externaluser/transactionhistory",
     icon: <AiIcons.AiFillHome />,
+    class: "nav-text",
+  },
+  {
+    title: "Account Pin",
+    path: "/externaluser/accountpin",
+    icon: <FaIcons.FaKey />,
     class: "nav-text",
   },
 ];

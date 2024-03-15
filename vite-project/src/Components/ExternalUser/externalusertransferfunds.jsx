@@ -1,26 +1,36 @@
 import "./externalusertransferfunds.scss";
+import { useState } from "react";
 import Dashboard from "../Dashboard/dashboard";
+import Modal from "../Modal/Modal";
 import axios from "axios";
 
 const ExternalUserTransferFunds = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({});
   const user = JSON.parse(sessionStorage.getItem("userid"));
+
   console.log(user);
   const transferFunds = (event) => {
     event.preventDefault();
     let amount = event.target.amount.value;
     let sourceAccount = event.target.sourceAccount.value;
     let destinationAccount = event.target.destinationAccount.value;
-    console.log(amount, sourceAccount, destinationAccount);
+    setFormData({
+      amount: amount,
+      from_account: sourceAccount,
+      to_account: destinationAccount,
+      from_user: user,
+    });
+    setIsModalOpen(true);
+  };
 
+  const handleTransferFunds = (formdata) => {
+    setIsModalOpen(false);
+    console.log(formdata);
     axios({
       method: "post",
       url: "http://localhost:8000/externaluser/transferfunds",
-      data: {
-        amount: amount,
-        from_account: sourceAccount,
-        to_account: destinationAccount,
-        from_user: user,
-      },
+      data: formdata,
     }).then(
       (response) => {
         console.log(response.data);
@@ -69,6 +79,14 @@ const ExternalUserTransferFunds = () => {
           />
           <button type="submit">Transfer</button>
         </form>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={handleTransferFunds}
+          formData={formData}
+        >
+          Modall
+        </Modal>
       </div>
     </>
   );
