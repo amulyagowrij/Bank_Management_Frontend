@@ -1,9 +1,10 @@
 .box-container {
   font-family: "Helvetica Neue", "sans-serif";
   color: #c5c5c51b;
+  height: 100%;
 
   .registration-container {
-    height: 90vh;
+    height: 50px;
     width: 40vw;
     box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
     display: flex;
@@ -12,6 +13,7 @@
 
     h1 {
       color: #000;
+      margin-bottom: -10px;
     }
     .input-container {
       width: 100%;

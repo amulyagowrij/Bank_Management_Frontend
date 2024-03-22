@@ -49,6 +49,9 @@ const ExternalUserAccountPin = () => {
         console.log(response);
         if (response.status === 200) {
           alert("Account pin updated successfully!");
+          event.target.accountnumber.value = "";
+          event.target.setpin.value = "";
+          event.target.confirmpin.value = "";
         } else if (response.status === 404) {
           alert("Account pin update failed");
         }

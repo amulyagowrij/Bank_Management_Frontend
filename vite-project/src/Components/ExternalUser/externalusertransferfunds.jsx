@@ -1,5 +1,5 @@
 import "./externalusertransferfunds.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dashboard from "../Dashboard/dashboard";
 import Modal from "../Modal/Modal";
 import axios from "axios";
@@ -36,6 +36,7 @@ const ExternalUserTransferFunds = () => {
         console.log(response.data);
         if (response.status === 200) {
           alert(`Funds transferred successfully`);
+          setFormData({});
         } else if (response.status === 400) {
           console.log(response.data);
           alert(`Funds transfer failed`);
@@ -84,9 +85,7 @@ const ExternalUserTransferFunds = () => {
           onClose={() => setIsModalOpen(false)}
           onConfirm={handleTransferFunds}
           formData={formData}
-        >
-          Modall
-        </Modal>
+        ></Modal>
       </div>
     </>
   );
