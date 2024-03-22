@@ -8,7 +8,7 @@ import "./internaluserhome.css";
 
 export default function InternalUser() {
   const userInfo = {
-    name: "Motu Patlu",
+    name: "System Admin",
     accountNumber: "131019",
     email: "motu.patlu@example.com",
     address: "Furfuri Nagar, Furfuri Chawl, Plot No. 1",
@@ -35,7 +35,7 @@ export default function InternalUser() {
 
   return (
     <>
-      <Dashboard role="externaluser" />
+      <Dashboard role="internaluser" />
       <div className="bank-page">
         <main className="bank-content">
           <section className="user-info">

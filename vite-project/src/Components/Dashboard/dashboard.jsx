@@ -12,9 +12,9 @@ const Dashboard = (props) => {
   const [sidebar, setsidebar] = useState(false);
   const navigate = useNavigate();
 
-  //   let role = props.role;
+  let role = props.role;
   //   let role = "internaluser";
-  let role = "externaluser";
+  //   let role = "externaluser";
 
   const showSideBar = () => {
     setsidebar(!sidebar);

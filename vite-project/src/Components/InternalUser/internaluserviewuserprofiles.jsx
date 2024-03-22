@@ -1,42 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./internaluserviewuserprofiles.scss";
 import Dashboard from "../Dashboard/dashboard";
 
-let VIEW_PROFILE_URL = "http://localhost:8000/internaluser/viewuserprofiles";
-let DELETE_ACCOUNT_URL = "http://localhost:8000/internaluser/deleteaccount";
-// const data = [
-//   {
-//     username: "mayurbhat",
-//     account_number: 111222,
-//     email: "mayur@yahoo",
-//     created_date: "2025-02-25",
-//     type: "Credited",
-//     amount: 1000,
-//   },
-//   {
-//     username: "mayurbhat",
-//     account_number: 111222,
-//     email: "mayur@yahoo",
-//     created_date: "2025-02-25",
-//     type: "Debited",
-//     amount: 1000,
-//   },
-//   {
-//     username: "mayurbhat",
-//     account_number: 111222,
-//     email: "mayur@yahoo",
-//     created_date: "2025-02-25",
-//     type: "Debited",
-//     amount: 1000,
-//   },
-// ];
+const VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
+const DELETE_ACCOUNT_URL = "http://localhost:8000/internaluser/deleteaccount";
 
 const InternalUserViewUserProfiles = () => {
   const [user_data, setUserData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({});
 
   useEffect(() => {
-    // Function to fetch data from the backend
     const fetchData = async () => {
       try {
         const response = await axios.get(VIEW_PROFILE_URL);
@@ -49,17 +24,23 @@ const InternalUserViewUserProfiles = () => {
     fetchData();
   }, []);
 
+  const viewRecord = (user_id) => {
+    const user = user_data.find((user) => user.user_id === user_id);
+    setSelectedUser(user);
+    setIsModalOpen(true);
+  };
+
   const deleteRecord = (user_id) => {
+    console.log("Deleting record with user_id:", user_id);
     axios
       .delete(`${DELETE_ACCOUNT_URL}/${user_id}`)
       .then((response) => {
-        // Delete was successful, update state to remove the deleted item
         if (response.status === 204) {
           alert("Account deleted successfully");
+          setUserData((prevUserData) =>
+            prevUserData.filter((account) => account.user_id !== user_id)
+          );
         }
-        setUserData((prevUserData) =>
-          prevUserData.filter((account) => account.user_id !== user_id)
-        );
       })
       .catch((error) => {
         console.error("There was an error deleting the account!", error);
@@ -82,14 +63,20 @@ const InternalUserViewUserProfiles = () => {
             </tr>
           </thead>
           <tbody>
-            {user_data.map((account) => (
+            {user_data.map((account, index) => (
               <tr key={account.user_id}>
                 <td>{account.user_name}</td>
                 <td>{account.account?.account_number}</td>
                 <td>{account.email}</td>
                 <td>{account.created_at}</td>
                 <td>
-                  <button className="view_profile">View Profile</button>
+                  <button
+                    id="view_profile"
+                    className="view_profile"
+                    onClick={() => viewRecord(account.user_id)}
+                  >
+                    View Profile
+                  </button>
                 </td>
                 <td>
                   <button
@@ -105,6 +92,18 @@ const InternalUserViewUserProfiles = () => {
           </tbody>
         </table>
       </div>
+      {isModalOpen && (
+        <div>
+          <div className="overlay"></div>
+          <div className="modal">
+            <button className="close" onClick={() => setIsModalOpen(false)}>
+              &times;
+            </button>
+            <p>User Name: {selectedUser.user_name}</p>
+            <p>Account Number: {selectedUser.account?.account_number}</p>
+          </div>
+        </div>
+      )}
     </>
   );
 };

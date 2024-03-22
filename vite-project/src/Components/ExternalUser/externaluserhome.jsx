@@ -7,6 +7,11 @@ import Dashboard from "../Dashboard/dashboard";
 import "./externaluserhome.css";
 
 export default function ExternalUser() {
+  const user_name = sessionStorage.getItem("name");
+  const account_number = sessionStorage.getItem("accountNumber");
+  const balance = sessionStorage.getItem("balance");
+
+  const navigate = useNavigate();
   const userInfo = {
     name: "Motu Patlu",
     accountNumber: "131019",
@@ -33,16 +38,22 @@ export default function ExternalUser() {
     ],
   };
 
+  const handleEditProfile = () => {
+    navigate("/externaluser/editprofile");
+  };
+
   return (
     <>
       <Dashboard role="externaluser" />
       <div className="bank-page">
         <main className="bank-content">
           <section className="user-info">
-            <h1>Hi, {userInfo.name}</h1>
-            <p>Account Number: {userInfo.accountNumber}</p>
-            <p>Balance: ${userInfo.balance.toFixed(2)}</p>
-            <button className="edit_profile">Edit Profile</button>
+            <h1>Hi, {user_name}</h1>
+            <p>Account Number: {account_number}</p>
+            <p>Balance: ${balance}</p>
+            <button className="edit_profile" onClick={handleEditProfile}>
+              Edit Profile
+            </button>
           </section>
           <section className="transaction-history">
             <h2>Transaction History</h2>

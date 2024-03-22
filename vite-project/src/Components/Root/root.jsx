@@ -40,11 +40,31 @@ const Root = () => {
           alert(`Login successful`);
 
           console.log(response.data);
-          sessionStorage.setItem("userid", response.data.user_id);
-          sessionStorage.setItem("name", response.data.name);
-          sessionStorage.setItem("user_userName", response.data.user_name);
-          sessionStorage.setItem("roleType", response.data.user_role);
-          sessionStorage.setItem("userType", response.data.user_type);
+          console.log(response.data.user_details.account);
+
+          sessionStorage.setItem("userid", response.data.user_details.user_id);
+          sessionStorage.setItem("name", response.data.user_details.name);
+          sessionStorage.setItem("name", response.data.user_details.name);
+          sessionStorage.setItem(
+            "user_userName",
+            response.data.user_details.user_name
+          );
+          sessionStorage.setItem(
+            "roleType",
+            response.data.user_details.user_role
+          );
+          sessionStorage.setItem(
+            "userType",
+            response.data.user_details.user_type
+          );
+          sessionStorage.setItem(
+            "accountNumber",
+            response.data.user_details.account.account_number
+          );
+          sessionStorage.setItem(
+            "balance",
+            response.data.user_details.account.balance
+          );
           console.log(sessionStorage);
 
           navigate({
