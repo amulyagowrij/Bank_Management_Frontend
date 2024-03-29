@@ -55,10 +55,10 @@ const Registration = () => {
             navigate("/verify-email", {
               state: {
                 name: userName,
-                user_name: user_userName,
+                username: user_userName,
                 email: userEmail,
                 user_role: roleType,
-                user_type: userType,
+                userType: userType,
                 password: userPassword,
               },
             });

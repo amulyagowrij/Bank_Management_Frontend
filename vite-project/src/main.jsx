@@ -14,6 +14,7 @@ import InternalUser from "./Components/InternalUser/internaluserhome.jsx";
 import InternalUserViewUserProfiles from "./Components/InternalUser/internaluserviewuserprofiles.jsx";
 import InternalUserAuthorizeTransactions from "./Components/InternalUser/internaluserauthorizetransactions.jsx";
 import VerifyEmail from "./Components/VerifyEmail/VerifyEmail";
+import TwoFactorAuth from "./Components/TwoFactorAuth/TwoFactorAuth";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
   {
     path: "/verify-email",
     element: <VerifyEmail />,
+  },
+  {
+    path: "/2fa",
+    element: <TwoFactorAuth />,
   },
 ]);
 
