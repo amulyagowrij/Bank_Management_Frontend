@@ -13,6 +13,7 @@ import ExternalUserAccountPin from "./Components/ExternalUser/externaluseraccoun
 import InternalUser from "./Components/InternalUser/internaluserhome.jsx";
 import InternalUserViewUserProfiles from "./Components/InternalUser/internaluserviewuserprofiles.jsx";
 import InternalUserAuthorizeTransactions from "./Components/InternalUser/internaluserauthorizetransactions.jsx";
+import VerifyEmail from "./Components/VerifyEmail/VerifyEmail";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
   {
     path: "/internaluser/authorizetransactions",
     element: <InternalUserAuthorizeTransactions />,
+  },
+  {
+    path: "/verify-email",
+    element: <VerifyEmail />,
   },
 ]);
 

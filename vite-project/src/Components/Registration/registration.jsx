@@ -42,37 +42,70 @@ const Registration = () => {
       return;
     }
 
-    // send data to backend, give confirmation if successful, and return to login page
-    axios({
-      method: "post",
-      url: REGISTRATION_URL,
-      data: {
-        name: userName,
-        user_name: user_userName,
+    // verify email address
+    await axios
+      .post("https://bank-management-backend-five.vercel.app/verify-email", {
         email: userEmail,
-        user_role: roleType,
-        user_type: userType,
-        password: userPassword,
-      },
-    }).then(
-      (response) => {
-        console.log(response);
-        if (response.status === 201) {
-          alert(`Registration successful`);
-          navigate("/");
-        } else {
+      })
+      .then(
+        (response) => {
+          console.log(response);
+          if (response.status === 200) {
+            alert(`Email sent for verification. Please check your email.`);
+            navigate("/verify-email", {
+              state: {
+                name: userName,
+                user_name: user_userName,
+                email: userEmail,
+                user_role: roleType,
+                user_type: userType,
+                password: userPassword,
+              },
+            });
+          } else {
+            alert(
+              `Email verification failed. There was an error verifying the email. Please try again`
+            );
+          }
+        },
+        (error) => {
+          console.log(error);
           alert(
-            `Registration failed. There was an error saving the user. Please try again`
+            `Email verification failed. There was an error verifying the email. Please try again`
           );
         }
-      },
-      (error) => {
-        console.log(error);
-        alert(
-          `Registration failed. There was an error saving the user. Please try again`
-        );
-      }
-    );
+      );
+    // send data to backend, give confirmation if successful, and return to login page
+    // await axios({
+    //   method: "post",
+    //   url: REGISTRATION_URL,
+    //   data: {
+    //     name: userName,
+    //     user_name: user_userName,
+    //     email: userEmail,
+    //     user_role: roleType,
+    //     user_type: userType,
+    //     password: userPassword,
+    //   },
+    // }).then(
+    //   (response) => {
+    //     console.log(response);
+    //     if (response.status === 201) {
+    //       alert(`Registration successful`);
+    //       navigate("/");
+    //     } else {
+    //       alert(
+    //         `Registration failed. There was an error saving the user. Please try again`
+    //       );
+    //     }
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //     alert(
+    //       `Registration failed. There was an error saving the user. Please try again`
+    //     );
+    //   }
+    // );
 
     console.log(userType, roleType, userName, userPassword);
   };
