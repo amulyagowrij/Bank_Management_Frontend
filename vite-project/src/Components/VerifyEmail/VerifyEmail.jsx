@@ -10,9 +10,9 @@ const VerifyEmail = () => {
   const [user, setUser] = useState({
     email: location.state.email,
     name: location.state.name,
-    user_name: location.state.user_name,
+    user_name: location.state.username,
     password: location.state.password,
-    user_type: location.state.user_type,
+    user_type: location.state.userType,
     user_role: location.state.user_role,
   });
   const onVerifySuccess = async () => {

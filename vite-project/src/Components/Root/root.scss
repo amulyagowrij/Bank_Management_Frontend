@@ -27,8 +27,12 @@
         margin-bottom: 35px;
         padding: 3px 10px;
         border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
         &:focus {
           outline: 1px solid #c5c5c5;
+          font-size: 16px;
+          font-weight: 300;
         }
       }
       .username,
@@ -39,9 +43,13 @@
         padding: 3px 10px;
         border: 1px solid black;
         border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
 
         &:focus {
           outline: 1px solid #c5c5c5;
+          font-size: 16px;
+          font-weight: 300;
         }
       }
       div {

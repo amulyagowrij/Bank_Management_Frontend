@@ -4,46 +4,62 @@
   height: 100%;
 
   .registration-container {
-    height: 50px;
-    width: 40vw;
+    height: auto;
+    width: 90%;
+    max-width: 40vw;
     box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    margin: 0 auto;
+    padding: 20px;
 
     h1 {
       color: #000;
       margin-bottom: -10px;
     }
+
     .input-container {
       width: 100%;
 
-      .user-dropdown,
-      .role-dropdown {
-        width: 80%;
-        height: 30px;
-        margin-bottom: 35px;
-        padding: 3px 10px;
-        border-radius: 8px;
-        &:focus {
-          outline: 1px solid #c5c5c5;
-        }
-      }
       .username,
       .emailaddress,
       .password,
       .confirm-password {
-        width: 75%;
-        height: 30px;
-        margin-bottom: 35px;
+        width: 100%;
+        height: 40px;
+        margin-bottom: 20px;
         padding: 3px 10px;
         border: 1px solid black;
         border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
 
         &:focus {
           outline: 1px solid #c5c5c5;
+          font-size: 16px;
+          font-weight: 300;
         }
       }
+
+      .user-dropdown,
+      .role-dropdown {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 20px;
+        padding: 3px 10px;
+        border: 1px solid black;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+
+        &:focus {
+          outline: 1px solid #c5c5c5;
+          font-size: 16px;
+          font-weight: 300;
+        }
+      }
+
       div {
         input {
           &::placeholder {
@@ -53,14 +69,29 @@
       }
 
       .primary-button {
-        width: 20%;
+        width: 100%;
+        max-width: 200px;
+        height: 40px;
         background-color: #126bc5;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 0 auto;
+        display: block;
 
         &:hover {
           background-color: #ffffff;
           border: 1px solid #000;
+          color: #000;
         }
       }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .registration-container {
+      max-width: 90%;
     }
   }
 }

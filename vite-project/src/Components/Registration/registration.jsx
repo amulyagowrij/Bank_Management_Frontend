@@ -37,6 +37,14 @@ const Registration = () => {
       return;
     }
 
+    // Validate password rules
+    if (!validatePassword(userPassword)) {
+      alert(
+        "Registration failed. Password must contain at least 8 characters, one uppercase letter, one number, and one special character."
+      );
+      return;
+    }
+
     if (userPassword !== confirmPassword) {
       alert("Registration failed. Passwords do not match.");
       return;
@@ -108,6 +116,13 @@ const Registration = () => {
     // );
 
     console.log(userType, roleType, userName, userPassword);
+  };
+
+  // Password validation function
+  const validatePassword = (password) => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
   };
 
   return (

@@ -2,14 +2,35 @@ import "./externalusertransferfunds.scss";
 import { useEffect, useState } from "react";
 import Dashboard from "../Dashboard/dashboard";
 import Modal from "../Modal/Modal";
+import SetPinModal from "../Modal/SetPinModal";
 import axios from "axios";
 
 const ExternalUserTransferFunds = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSetPinModalOpen, setIsSetPinModalOpen] = useState(false);
   const [formData, setFormData] = useState({});
   const user = JSON.parse(sessionStorage.getItem("userid"));
+  const accountNumber = JSON.parse(sessionStorage.getItem("accountNumber"));
 
-  console.log(user);
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `http://localhost:8000/externaluser/viewaccountpin/${accountNumber}`,
+    }).then(
+      (response) => {
+        console.log(response.data);
+        if (response.status === 200) {
+          if (response.data["pin"] === null) {
+            setIsSetPinModalOpen(true);
+          }
+        }
+      },
+      (error) => {
+        console.log(error.response.data);
+      }
+    );
+  }, []);
+
   const transferFunds = (event) => {
     event.preventDefault();
     let amount = event.target.amount.value;
@@ -86,6 +107,10 @@ const ExternalUserTransferFunds = () => {
           onConfirm={handleTransferFunds}
           formData={formData}
         ></Modal>
+        <SetPinModal
+          isOpen={isSetPinModalOpen}
+          onClose={() => setIsSetPinModalOpen(false)}
+        ></SetPinModal>
       </div>
     </>
   );
