@@ -11,6 +11,7 @@ const ExternalUserTransactionHistory = () => {
       .get("http://localhost:8000/externaluser/transactionhistory", {
         params: {
           user: user_id,
+          isSystemAdmin: false,
         },
       })
       .then((response) => {

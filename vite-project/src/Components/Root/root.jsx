@@ -19,7 +19,12 @@ const Root = () => {
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     // check all fields filled out
-    if (user_userName === "" || userPassword === "") {
+    if (
+      user_userName === "" ||
+      userPassword === "" ||
+      userType === "" ||
+      roleType === ""
+    ) {
       alert("Login failed. Please fill out all fields");
       return;
     }
@@ -29,6 +34,8 @@ const Root = () => {
       state: {
         username: user_userName,
         password: userPassword,
+        userType: userType,
+        roleType: roleType,
       },
     });
   };

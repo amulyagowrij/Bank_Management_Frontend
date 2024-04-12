@@ -1,19 +1,13 @@
 .bank-page {
   box-sizing: border-box;
   margin: 20px;
-  width: 100%;
+  width: calc(100% - 40px); 
   font-family: "Arial", sans-serif;
 }
 
 .bank-content {
   padding: 20px;
 }
-
-/* .bank-header {
-  background-color: #f0f0f0;
-  padding: 10px;
-  text-align: center;
-} */
 
 .user-info {
   background-color: #126bc5;
@@ -22,11 +16,13 @@
   margin-top: 50px;
   margin-left: 100px;
 }
+
 .edit_profile:hover {
   transition: all 0.3s ease-in-out;
   transform: scale(1.1);
   border: 1px solid #126bc5;
 }
+
 .transaction-history h2 {
   background-color: #fff;
   padding: 20px;
@@ -40,10 +36,9 @@
 
 .transaction-history th,
 .transaction-history td {
-  text-align: centre;
+  text-align: center; 
   padding: 8px 80px;
   border-bottom: 1px solid #ddd;
-  /* height: 35px; */
 }
 
 .transaction-history th {
@@ -57,4 +52,38 @@
   border-radius: 10%;
   opacity: 0.8;
   color: #42b947;
+}
+
+@media only screen and (max-width: 768px) {
+  .user-info,
+  .transaction-history h2 {
+    margin-left: 20px;
+  }
+
+  .transaction-history th,
+  .transaction-history td {
+    padding: 8px 20px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .bank-page {
+    margin: 10px;
+    width: calc(100% - 20px);
+  }
+
+  .user-info,
+  .transaction-history h2 {
+    margin-top: 20px;
+    margin-left: 10px;
+  }
+
+  .transaction-history th,
+  .transaction-history td {
+    padding: 4px 10px;
+  }
+
+  .edit_profile:hover {
+    transform: none;
+  }
 }

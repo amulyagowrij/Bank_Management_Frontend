@@ -6,6 +6,8 @@ import axios from "axios";
 import Dashboard from "../Dashboard/dashboard";
 import "./externaluserhome.css";
 
+let firstload = true;
+
 export default function ExternalUser() {
   const user_name = sessionStorage.getItem("name");
   const account_number = sessionStorage.getItem("accountNumber");
@@ -37,6 +39,27 @@ export default function ExternalUser() {
       },
     ],
   };
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:8000/session-user-details`, {
+  //       withCredentials: true,
+  //     })
+  //     .then((response) => {
+  //       console.log("Response", response.data);
+  //     });
+  // }, []);
+
+  useEffect(() => {
+    if (firstload) {
+      firstload = false;
+      if (sessionStorage.getItem("name") === null) {
+        alert("You need to log in to access this page");
+        sessionStorage.clear();
+        navigate("../");
+      }
+    }
+  }, []);
 
   const handleEditProfile = () => {
     navigate("/externaluser/editprofile");

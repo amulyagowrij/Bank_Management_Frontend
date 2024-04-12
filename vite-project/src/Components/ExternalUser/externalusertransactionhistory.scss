@@ -1,60 +1,114 @@
 .transaction-container {
-  width: 100vw;
-  height: 70vh;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  margin-top: -120px;
-  margin-left: -120px;
 
   .transaction-history {
-    width: 80%;
+    width: 100%;
+
     h2 {
-      background-color: #fff;
-      padding: 20px;
-      margin-left: -20px;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 30px;
+      text-align: center;
+      margin-left: -10px;
     }
+
     table {
+      width: 100%;
       border-collapse: collapse;
+
       th,
       td {
-        text-align: centre;
-        padding: 8px 50px;
+        text-align: center;
+        padding: 12px;
         border-bottom: 1px solid #ddd;
+        color: #000;
       }
+
       th {
         background-color: #126bc5;
-        color: white;
+        color: #fff;
+        font-weight: 600;
       }
+
       .credit {
         background-color: #bcf0be;
-        border-radius: 10%;
+        border-radius: 5px;
         opacity: 0.8;
+
         span {
           color: #42b947;
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 500;
         }
       }
+
       .debit {
         background-color: #e77a7a;
-        border-radius: 10%;
+        border-radius: 5px;
         opacity: 0.8;
+
         span {
           color: #ae0404;
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 500;
         }
       }
+
       .transfer {
         background-color: #83aad9;
-        border-radius: 10%;
+        border-radius: 5px;
         opacity: 0.8;
+
         span {
           color: #0780f0;
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .transaction-container {
+    padding: 10px;
+
+    .transaction-history {
+      h2 {
+        text-align: center;
+      }
+
+      table {
+        th,
+        td {
+          padding: 8px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .transaction-container {
+    .transaction-history {
+      h2 {
+        text-align: center;
+      }
+
+      table {
+        th,
+        td {
+          padding: 6px;
+          font-size: 12px;
         }
       }
     }

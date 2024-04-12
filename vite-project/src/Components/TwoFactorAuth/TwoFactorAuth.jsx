@@ -10,6 +10,8 @@ const TwoFactorAuth = () => {
   const username = state.username;
   const userType = String(state.userType);
   const password = state.password;
+  const roleType = String(state.roleType);
+
   const navigate = useNavigate();
   useEffect(() => {
     const fetch2FA = async () => {
@@ -70,19 +72,21 @@ const TwoFactorAuth = () => {
   const onVerifySuccess = async () => {
     await axios({
       method: "post",
-      url: "http://localhost:8000/login",
+      url: "http://localhost:8000/login", 
       data: {
         user_name: username,
         password: password,
+        user_type: userType,
+        user_role: roleType,
       },
     }).then(
       (response) => {
         if (response.status === 200) {
           alert(`Login successful`);
           console.log(response.data);
-          console.log(response.data.user_details.account);
+          sessionStorage.setItem("accessToken", response.data.access);
+          sessionStorage.setItem("refreshToken", response.data.refresh); 
           sessionStorage.setItem("userid", response.data.user_details.user_id);
-          sessionStorage.setItem("name", response.data.user_details.name);
           sessionStorage.setItem("name", response.data.user_details.name);
           sessionStorage.setItem(
             "user_userName",
@@ -104,7 +108,10 @@ const TwoFactorAuth = () => {
             "balance",
             response.data.user_details.account.balance
           );
+
           console.log(sessionStorage);
+
+          // Redirect or navigate user to the appropriate page
           navigate({
             pathname:
               "../" + sessionStorage.getItem("userType").toLowerCase() + "user",
@@ -115,12 +122,11 @@ const TwoFactorAuth = () => {
       },
       (error) => {
         console.log(error);
-        alert(
-          `Login failed: ${error.response.data}. Please check your information and try again`
-        );
+        alert(`Login failed. Please check your information and try again`);
       }
     );
   };
+
   return (
     <>
       <div className="two-factor-auth-container">
