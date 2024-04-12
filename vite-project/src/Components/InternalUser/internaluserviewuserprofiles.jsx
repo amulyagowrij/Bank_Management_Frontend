@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./internaluserviewuserprofiles.scss";
 import Dashboard from "../Dashboard/dashboard";
+import { useNavigate } from "react-router-dom";
 
 const VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
 const DELETE_ACCOUNT_URL = "http://localhost:8000/internaluser/deleteaccount";
+let firstload = true;
 
 const InternalUserViewUserProfiles = () => {
   const [user_data, setUserData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +26,17 @@ const InternalUserViewUserProfiles = () => {
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (firstload) {
+      firstload = false;
+      if (sessionStorage.getItem("name") === null) {
+        alert("You need to log in to access this page");
+        sessionStorage.clear();
+        navigate("../");
+      }
+    }
   }, []);
 
   const viewRecord = (user_id) => {

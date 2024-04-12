@@ -6,7 +6,10 @@ import axios from "axios";
 import Dashboard from "../Dashboard/dashboard";
 import "./internaluserhome.css";
 
+let firstload = true;
+
 export default function InternalUser() {
+  const navigate = useNavigate();
   const userInfo = {
     name: "System Admin",
     accountNumber: "131019",
@@ -32,6 +35,17 @@ export default function InternalUser() {
       },
     ],
   };
+
+  useEffect(() => {
+    if (firstload) {
+      firstload = false;
+      if (sessionStorage.getItem("name") === null) {
+        alert("You need to log in to access this page");
+        sessionStorage.clear();
+        navigate("../");
+      }
+    }
+  }, []);
 
   return (
     <>

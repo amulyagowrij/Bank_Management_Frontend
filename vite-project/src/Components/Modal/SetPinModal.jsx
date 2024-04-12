@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "./SetPinModal.scss";
 import React from "react";
 
-const SetPinModal = () => {
+const SetPinModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
+  if (!isOpen) return null;
   return (
     <>
       <div className="overlay"></div>

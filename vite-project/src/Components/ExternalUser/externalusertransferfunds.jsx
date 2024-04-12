@@ -19,10 +19,14 @@ const ExternalUserTransferFunds = () => {
     }).then(
       (response) => {
         console.log(response.data);
-        if (response.status === 200) {
-          if (response.data["pin"] === null) {
-            setIsSetPinModalOpen(true);
-          }
+        if (
+          response.status === 200 &&
+          response.data.message === "Account pin is set"
+        ) {
+          console.log(response.data);
+          setIsSetPinModalOpen(false);
+        } else {
+          setIsSetPinModalOpen(true);
         }
       },
       (error) => {
@@ -36,11 +40,13 @@ const ExternalUserTransferFunds = () => {
     let amount = event.target.amount.value;
     let sourceAccount = event.target.sourceAccount.value;
     let destinationAccount = event.target.destinationAccount.value;
+    let isAuthoriseRequired = amount > 5000 ? true : false;
     setFormData({
       amount: amount,
       from_account: sourceAccount,
       to_account: destinationAccount,
       from_user: user,
+      isAuthoriseRequired: isAuthoriseRequired,
     });
     setIsModalOpen(true);
   };
