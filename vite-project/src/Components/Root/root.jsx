@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./root.scss";
 import { useState } from "react";
 import axios from "axios";
+import CSRFToken from "../CSRFToken/CSRFToken";
 
 const Root = () => {
   const [user_userName, setUser_UserName] = useState("");
@@ -53,6 +54,7 @@ const Root = () => {
             onSubmit={handleLoginSubmit}
             method="post"
           >
+            <CSRFToken />
             <div>
               <select
                 value={userType}

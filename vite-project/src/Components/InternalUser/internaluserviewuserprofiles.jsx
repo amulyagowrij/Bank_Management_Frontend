@@ -3,8 +3,8 @@ import axios from "axios";
 import "./internaluserviewuserprofiles.scss";
 import Dashboard from "../Dashboard/dashboard";
 import { useNavigate } from "react-router-dom";
-
-const VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
+import Cookies from "js-cookie";
+const VIEW_PROFILE_URL = "http://localhost:8000/viewalluserprofiles";
 const DELETE_ACCOUNT_URL = "http://localhost:8000/internaluser/deleteaccount";
 let firstload = true;
 
@@ -17,9 +17,19 @@ const InternalUserViewUserProfiles = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": Cookies.get("csrftoken"),
+        },
+      };
+
       try {
-        const response = await axios.get(VIEW_PROFILE_URL);
-        setUserData(response.data);
+        const response = await axios.get(VIEW_PROFILE_URL, config);
+        console.log(response.data);
+        setUserData(response.data.profile);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -28,39 +38,64 @@ const InternalUserViewUserProfiles = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (firstload) {
-      firstload = false;
-      if (sessionStorage.getItem("name") === null) {
-        alert("You need to log in to access this page");
-        sessionStorage.clear();
-        navigate("../");
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (firstload) {
+  //     firstload = false;
+  //     if (sessionStorage.getItem("name") === null) {
+  //       alert("You need to log in to access this page");
+  //       sessionStorage.clear();
+  //       navigate("../");
+  //     }
+  //   }
+  // }, []);
 
   const viewRecord = (user_id) => {
-    const user = user_data.find((user) => user.user_id === user_id);
+    const user = user_data.find((user) => user.id === user_id);
     setSelectedUser(user);
     setIsModalOpen(true);
   };
 
-  const deleteRecord = (user_id) => {
-    console.log("Deleting record with user_id:", user_id);
-    axios
-      .delete(`${DELETE_ACCOUNT_URL}/${user_id}`)
-      .then((response) => {
-        if (response.status === 204) {
-          alert("Account deleted successfully");
-          setUserData((prevUserData) =>
-            prevUserData.filter((account) => account.user_id !== user_id)
-          );
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error deleting the account!", error);
-      });
+  const deleteRecord = async (user_id) => {
+    const config = {
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+    };
+
+    try {
+      const response = await axios.delete(
+        `${DELETE_ACCOUNT_URL}/${user_id}`,
+        config
+      );
+      console.log(response);
+      if (response.status === 204) {
+        alert("Account deleted successfully");
+        setUserData((prevUserData) =>
+          prevUserData.filter((account) => account.id !== user_id)
+        );
+      }
+    } catch (error) {
+      console.error("There was an error deleting the account!", error);
+    }
   };
+  //   console.log("Deleting record with user_id:", user_id);
+  //   axios
+  //     .delete(`${DELETE_ACCOUNT_URL}/${user_id}`)
+  //     .then((response) => {
+  //       if (response.status === 204) {
+  //         alert("Account deleted successfully");
+  //         setUserData((prevUserData) =>
+  //           prevUserData.filter((account) => account.user_id !== user_id)
+  //         );
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("There was an error deleting the account!", error);
+  //     });
+  // };
 
   return (
     <>
@@ -79,7 +114,7 @@ const InternalUserViewUserProfiles = () => {
           </thead>
           <tbody>
             {user_data.map((account, index) => (
-              <tr key={account.user_id}>
+              <tr key={account.id}>
                 <td>{account.user_name}</td>
                 <td>{account.account?.account_number}</td>
                 <td>{account.email}</td>
@@ -88,7 +123,7 @@ const InternalUserViewUserProfiles = () => {
                   <button
                     id="view_profile"
                     className="view_profile"
-                    onClick={() => viewRecord(account.user_id)}
+                    onClick={() => viewRecord(account.id)}
                   >
                     View Profile
                   </button>
@@ -97,7 +132,7 @@ const InternalUserViewUserProfiles = () => {
                   <button
                     id="delete"
                     className="delete"
-                    onClick={() => deleteRecord(account.user_id)}
+                    onClick={() => deleteRecord(account.id)}
                   >
                     Delete Account
                   </button>

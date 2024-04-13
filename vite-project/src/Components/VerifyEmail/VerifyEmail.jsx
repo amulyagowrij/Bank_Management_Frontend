@@ -2,6 +2,8 @@ import "./VerifyEmail.css";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
+
 const VerifyEmail = () => {
   const [inputOtp, setInputOtp] = useState("");
   const location = useLocation();
@@ -16,29 +18,62 @@ const VerifyEmail = () => {
     user_role: location.state.user_role,
   });
   const onVerifySuccess = async () => {
-    await axios({
-      method: "post",
-      url: "http://localhost:8000/registration",
-      data: user,
-    }).then(
-      (response) => {
-        console.log(response);
-        if (response.status === 201) {
-          alert(`Registration successful`);
-          navigate("/");
-        } else {
-          alert(
-            `Registration failed. There was an error saving the user. Please try again`
-          );
-        }
+    const config = {
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
       },
-      (error) => {
-        console.log(error);
+    };
+    console.log("Config", config);
+    let data = user;
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/registration`,
+        data,
+        config
+      );
+
+      if (response.status === 201) {
+        alert(`Registration successful`);
+        navigate("/");
+      } else {
         alert(
           `Registration failed. There was an error saving the user. Please try again`
         );
       }
-    );
+    } catch (err) {
+      console.log(err);
+      alert(
+        `Registration failed. There was an error saving the user. Please try again`
+      );
+    }
+
+    // await axios({
+    //   method: "post",
+    //   url: "http://localhost:8000/registration",
+    //   data: user,
+    //   config,
+    // }).then(
+    //   (response) => {
+    //     console.log(response);
+    //     if (response.status === 201) {
+    //       alert(`Registration successful`);
+    //       navigate("/");
+    //     } else {
+    //       alert(
+    //         `Registration failed. There was an error saving the user. Please try again`
+    //       );
+    //     }
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //     alert(
+    //       `Registration failed. There was an error saving the user. Please try again`
+    //     );
+    //   }
+    // );
   };
 
   const verifyOtp = async () => {

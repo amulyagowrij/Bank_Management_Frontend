@@ -2,23 +2,46 @@ import "./externalusertransactionhistory.scss";
 import Dashboard from "../Dashboard/dashboard";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const ExternalUserTransactionHistory = () => {
   const [transactions, setTransactions] = useState([]);
-  const user_id = JSON.parse(sessionStorage.getItem("userid"));
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/externaluser/transactionhistory", {
-        params: {
-          user: user_id,
-          isSystemAdmin: false,
+    const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": Cookies.get("csrftoken"),
         },
-      })
-      .then((response) => {
+      };
+      console.log("Config", config);
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/externaluser/transactionhistory",
+          config
+        );
         console.log(response.data);
         setTransactions(response.data);
-      });
-  }, [user_id]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+
+    // axios
+    //   .get("http://localhost:8000/externaluser/transactionhistory", {
+    //     params: {
+    //       user: user_id,
+    //       isSystemAdmin: false,
+    //     },
+    //   })
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     setTransactions(response.data);
+    //   });
+  }, []);
   return (
     <>
       <Dashboard role="externaluser" />

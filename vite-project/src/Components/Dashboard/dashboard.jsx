@@ -7,22 +7,47 @@ import { ExternalUserNavbarData } from "../ExternalUser/externalusernavbardata";
 import { InternalUserNavbarData } from "../InternalUser/internalusernavbardata";
 import { IconContext } from "react-icons";
 import { Link, useNavigate } from "react-router-dom";
-
+import axios from "axios";
+import Cookies from "js-cookie";
 const Dashboard = (props) => {
   const [sidebar, setsidebar] = useState(false);
   const navigate = useNavigate();
 
   let role = props.role;
-  //   let role = "internaluser";
-  //   let role = "externaluser";
 
   const showSideBar = () => {
     setsidebar(!sidebar);
   };
 
-  const logout = () => {
-    sessionStorage.clear();
-    navigate("/");
+  const logout = async () => {
+    const config = {
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+    };
+
+    const body = JSON.stringify({
+      withCredentials: true,
+    });
+
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/logout`,
+        body,
+        config
+      );
+
+      if (res.data.success) {
+        navigate("/");
+      } else {
+        alert("Logout failed");
+      }
+    } catch (err) {
+      alert("Logout failed");
+    }
   };
 
   return (
