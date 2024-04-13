@@ -5,40 +5,19 @@ import { createSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Dashboard from "../Dashboard/dashboard";
 import "./externaluserhome.css";
+import Cookies from "js-cookie";
 
 let firstload = true;
+let VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
 
 export default function ExternalUser() {
-  const user_name = sessionStorage.getItem("name");
-  const account_number = sessionStorage.getItem("accountNumber");
-  const balance = sessionStorage.getItem("balance");
+  const [user_data, setUserData] = useState({
+    userName: "",
+    accountNumber: "",
+    balance: "",
+  });
 
   const navigate = useNavigate();
-  const userInfo = {
-    name: "Motu Patlu",
-    accountNumber: "131019",
-    email: "motu.patlu@example.com",
-    address: "Furfuri Nagar, Furfuri Chawl, Plot No. 1",
-    phone: "9999900000",
-    balance: 10110.0,
-    branch: "Bhind",
-    transactions: [
-      {
-        id: 31,
-        amount: 200.0,
-        type: "Credited",
-        date: "2023-07-25",
-        sourceAccount: "116797",
-      },
-      {
-        id: 31,
-        amount: 200.0,
-        type: "Credited",
-        date: "2023-07-25",
-        sourceAccount: "116797",
-      },
-    ],
-  };
 
   // useEffect(() => {
   //   axios
@@ -50,15 +29,43 @@ export default function ExternalUser() {
   //     });
   // }, []);
 
+  // useEffect(() => {
+  //   if (firstload) {
+  //     firstload = false;
+  //     if (sessionStorage.getItem("name") === null) {
+  //       alert("You need to log in to access this page");
+  //       sessionStorage.clear();
+  //       navigate("../");
+  //     }
+  //   }
+  // }, []);
+
   useEffect(() => {
-    if (firstload) {
-      firstload = false;
-      if (sessionStorage.getItem("name") === null) {
-        alert("You need to log in to access this page");
-        sessionStorage.clear();
-        navigate("../");
+    const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": Cookies.get("csrftoken"),
+        },
+      };
+
+      try {
+        const response = await axios.get(VIEW_PROFILE_URL, config);
+        console.log(response.data);
+        const user = response.data.profile;
+        setUserData({
+          userName: user.name,
+          accountNumber: user.account.account_number,
+          balance: user.account.balance,
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    }
+    };
+
+    fetchData();
   }, []);
 
   const handleEditProfile = () => {
@@ -71,37 +78,12 @@ export default function ExternalUser() {
       <div className="bank-page">
         <main className="bank-content">
           <section className="user-info">
-            <h1>Hi, {user_name}</h1>
-            <p>Account Number: {account_number}</p>
-            <p>Balance: ${balance}</p>
+            <h1>Hi, {user_data.userName}</h1>
+            <p>Account Number: {user_data.accountNumber}</p>
+            <p>Balance: ${user_data.balance}</p>
             <button className="edit_profile" onClick={handleEditProfile}>
               Edit Profile
             </button>
-          </section>
-          <section className="transaction-history">
-            <h2>Transaction History</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Transaction ID</th>
-                  <th>Amount</th>
-                  <th>Type</th>
-                  <th>Date</th>
-                  <th>Source Account</th>
-                </tr>
-              </thead>
-              <tbody>
-                {userInfo.transactions.map((transaction) => (
-                  <tr key={transaction.id}>
-                    <td>{transaction.id}</td>
-                    <td>${transaction.amount}</td>
-                    <td className="type">{transaction.type}</td>
-                    <td>{transaction.date}</td>
-                    <td>{transaction.sourceAccount}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </section>
         </main>
       </div>

@@ -3,6 +3,8 @@ import Dashboard from "../Dashboard/dashboard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import CSRFToken from "../CSRFToken/CSRFToken";
 
 let UPDATE_URL = "http://localhost:8000/externaluser/updateprofile";
 let VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
@@ -14,19 +16,26 @@ const ExternalUserEditProfile = () => {
     userEmail: "",
   });
   const [userPassword, setUserPassword] = useState("");
-  const user_id = JSON.parse(sessionStorage.getItem("userid"));
-
+  const navigate = useNavigate();
   useEffect(() => {
-    // Function to fetch data from the backend
     const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": Cookies.get("csrftoken"),
+        },
+      };
+
       try {
-        const response = await axios.get(VIEW_PROFILE_URL);
-        const user = response.data.filter((user) => user.user_id === user_id);
-        console.log(user[0]);
+        const response = await axios.get(VIEW_PROFILE_URL, config);
+        console.log(response.data);
+        const user = response.data.profile;
         setUserData({
-          userName: user[0].name,
-          user_userName: user[0].user_name,
-          userEmail: user[0].email,
+          userName: user.name,
+          user_userName: user.user_name,
+          userEmail: user.email,
         });
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -36,18 +45,74 @@ const ExternalUserEditProfile = () => {
     fetchData();
   }, []);
 
+  // Password validation function
+  const validatePassword = (password) => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const logout = async () => {
+    const config = {
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+    };
+
+    const body = JSON.stringify({
+      withCredentials: true,
+    });
+
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/logout`,
+        body,
+        config
+      );
+
+      if (res.data.success) {
+        navigate("/");
+      } else {
+        alert("Logout failed");
+      }
+    } catch (err) {
+      alert("Logout failed");
+    }
+  };
+
   const handleUpdateUserSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": Cookies.get("csrftoken"),
+        },
+      };
+
+      if (!validatePassword(userPassword)) {
+        alert(
+          "Registration failed. Password must contain at least 8 characters, one uppercase letter, one number, and one special character."
+        );
+        return;
+      }
+
       const userDetails = {
         password: userPassword,
       };
 
-      const response = await axios.put(`${UPDATE_URL}/${user_id}`, userDetails);
+      const response = await axios.put(`${UPDATE_URL}`, userDetails, config);
 
       console.log(response.data);
       alert("Profile updated successfully!");
+      // logout();
+      navigate("/");
     } catch (error) {
       // Handle error response
       console.error(
@@ -68,6 +133,7 @@ const ExternalUserEditProfile = () => {
             onSubmit={handleUpdateUserSubmit}
             method="post"
           >
+            <CSRFToken />
             <div>
               <input
                 value={user_data.userName}

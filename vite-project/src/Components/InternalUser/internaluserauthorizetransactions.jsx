@@ -3,39 +3,51 @@ import Dashboard from "../Dashboard/dashboard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-
+import Cookies from "js-cookie";
 let firstload = true;
 
 const InternalUserAuthorizeTransactions = () => {
   const [transactions, setTransactions] = useState([]);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/externaluser/transactionhistory", {
-        params: {
-          isSystemAdmin: true,
+    const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": Cookies.get("csrftoken"),
         },
-      })
-      .then((response) => {
+      };
+      console.log("Config", config);
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/externaluser/transactionhistory",
+          config
+        );
         console.log(response.data);
         setTransactions(response.data);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (firstload) {
-      firstload = false;
-      if (sessionStorage.getItem("name") === null) {
-        alert("You need to log in to access this page");
-        sessionStorage.clear();
-        navigate("../");
+      } catch (err) {
+        console.log(err);
       }
-    }
+    };
+    fetchData();
   }, []);
 
-  const handleAuthorization = (transaction_id) => {
+  // useEffect(() => {
+  //   if (firstload) {
+  //     firstload = false;
+  //     if (sessionStorage.getItem("name") === null) {
+  //       alert("You need to log in to access this page");
+  //       sessionStorage.clear();
+  //       navigate("../");
+  //     }
+  //   }
+  // }, []);
+
+  const handleAuthorization = async (transaction_id) => {
     const from_account_number = transactions.find(
       (transaction) => transaction.transaction_id === transaction_id
     ).from_account_number;
@@ -54,25 +66,32 @@ const InternalUserAuthorizeTransactions = () => {
     };
 
     console.log("Update Details", updateDetails);
+    const config = {
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+    };
 
-    axios
-      .put(
+    try {
+      const response = await axios.put(
         `http://localhost:8000/internaluser/authorizetransaction/${transaction_id}`,
-        updateDetails
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          alert("Transaction authorized successfully");
-          setTransactions((prevTransactions) =>
-            prevTransactions.filter(
-              (transaction) => transaction.transaction_id !== transaction_id
-            )
-          );
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error authorizing the transaction!", error);
-      });
+        updateDetails,
+        config
+      );
+      if (response.status === 200) {
+        alert("Transaction authorized successfully");
+        setTransactions((prevTransactions) =>
+          prevTransactions.filter(
+            (transaction) => transaction.transaction_id !== transaction_id
+          )
+        );
+      }
+    } catch (error) {
+      console.error("There was an error authorizing the transaction!", error);
+    }
   };
 
   return (

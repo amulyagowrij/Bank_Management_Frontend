@@ -2,6 +2,7 @@ import "./registration.scss";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import CSRFToken from "../CSRFToken/CSRFToken";
 
 let REGISTRATION_URL = "http://localhost:8000/registration";
 
@@ -135,6 +136,7 @@ const Registration = () => {
             onSubmit={handleRegistrationSubmit}
             method="post"
           >
+            <CSRFToken />
             <div>
               <select
                 value={userType}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./TwoFactorAuth.css";
+import Cookies from "js-cookie";
 
 const TwoFactorAuth = () => {
   const [qrCodeUrl, setQrCodeUrl] = useState("");
@@ -70,61 +71,100 @@ const TwoFactorAuth = () => {
   };
 
   const onVerifySuccess = async () => {
-    await axios({
-      method: "post",
-      url: "http://localhost:8000/login", 
-      data: {
-        user_name: username,
-        password: password,
-        user_type: userType,
-        user_role: roleType,
+    const config = {
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
       },
-    }).then(
-      (response) => {
-        if (response.status === 200) {
-          alert(`Login successful`);
-          console.log(response.data);
-          sessionStorage.setItem("accessToken", response.data.access);
-          sessionStorage.setItem("refreshToken", response.data.refresh); 
-          sessionStorage.setItem("userid", response.data.user_details.user_id);
-          sessionStorage.setItem("name", response.data.user_details.name);
-          sessionStorage.setItem(
-            "user_userName",
-            response.data.user_details.user_name
-          );
-          sessionStorage.setItem(
-            "roleType",
-            response.data.user_details.user_role
-          );
-          sessionStorage.setItem(
-            "userType",
-            response.data.user_details.user_type
-          );
-          sessionStorage.setItem(
-            "accountNumber",
-            response.data.user_details.account.account_number
-          );
-          sessionStorage.setItem(
-            "balance",
-            response.data.user_details.account.balance
-          );
+    };
+    console.log("Config", config);
+    let data = {
+      user_name: username,
+      password: password,
+      user_type: userType,
+      user_role: roleType,
+    };
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/login`,
+        data,
+        config
+      );
 
-          console.log(sessionStorage);
+      if (response.status === 200) {
+        alert(`Login successful`);
+        console.log(response.data);
 
-          // Redirect or navigate user to the appropriate page
-          navigate({
-            pathname:
-              "../" + sessionStorage.getItem("userType").toLowerCase() + "user",
-          });
-        } else {
-          alert(`Login failed. Please check your information and try again`);
-        }
-      },
-      (error) => {
-        console.log(error);
+        // Redirect or navigate user to the appropriate page
+        navigate({
+          pathname:
+            "../" + response.data.user_details.user_type.toLowerCase() + "user",
+        });
+      } else {
         alert(`Login failed. Please check your information and try again`);
       }
-    );
+    } catch (err) {
+      console.log(err);
+      alert(`Login failed. Please check your information and try again`);
+    }
+
+    // await axios({
+    //   method: "post",
+    //   url: "http://localhost:8000/login",
+    //   data: {
+    //     user_name: username,
+    //     password: password,
+    //     user_type: userType,
+    //     user_role: roleType,
+    //   },
+    // }).then(
+    //   (response) => {
+    //     if (response.status === 200) {
+    //       alert(`Login successful`);
+    //       console.log(response.data);
+    //       sessionStorage.setItem("accessToken", response.data.access);
+    //       sessionStorage.setItem("refreshToken", response.data.refresh);
+    //       sessionStorage.setItem("userid", response.data.user_details.user_id);
+    //       sessionStorage.setItem("name", response.data.user_details.name);
+    //       sessionStorage.setItem(
+    //         "user_userName",
+    //         response.data.user_details.user_name
+    //       );
+    //       sessionStorage.setItem(
+    //         "roleType",
+    //         response.data.user_details.user_role
+    //       );
+    //       sessionStorage.setItem(
+    //         "userType",
+    //         response.data.user_details.user_type
+    //       );
+    //       sessionStorage.setItem(
+    //         "accountNumber",
+    //         response.data.user_details.account.account_number
+    //       );
+    //       sessionStorage.setItem(
+    //         "balance",
+    //         response.data.user_details.account.balance
+    //       );
+
+    //       console.log(sessionStorage);
+
+    //       // Redirect or navigate user to the appropriate page
+    //       navigate({
+    //         pathname:
+    //           "../" + sessionStorage.getItem("userType").toLowerCase() + "user",
+    //       });
+    //     } else {
+    //       alert(`Login failed. Please check your information and try again`);
+    //     }
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //     alert(`Login failed. Please check your information and try again`);
+    //   }
+    // );
   };
 
   return (
