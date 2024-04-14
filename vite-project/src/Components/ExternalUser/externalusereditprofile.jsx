@@ -8,6 +8,9 @@ import CSRFToken from "../CSRFToken/CSRFToken";
 
 let UPDATE_URL = "http://localhost:8000/externaluser/updateprofile";
 let VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
+let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let isAuthenticated = false;
+let firstload = true;
 
 const ExternalUserEditProfile = () => {
   const [user_data, setUserData] = useState({
@@ -17,6 +20,38 @@ const ExternalUserEditProfile = () => {
   });
   const [userPassword, setUserPassword] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      try {
+        const response = await axios.get(ISAUTHENTICATED, config);
+        if (response.data.error || response.data.isAuthenticated === "error") {
+          alert("You need to login to access this page");
+          navigate("/");
+        } else if (response.data.isAuthenticated === "success") {
+          isAuthenticated = true;
+        } else {
+          alert("Something went wrong");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (firstload) {
+      fetchData();
+      firstload = false;
+    }
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       const config = {
@@ -30,7 +65,6 @@ const ExternalUserEditProfile = () => {
 
       try {
         const response = await axios.get(VIEW_PROFILE_URL, config);
-        console.log(response.data);
         const user = response.data.profile;
         setUserData({
           userName: user.name,
@@ -108,10 +142,7 @@ const ExternalUserEditProfile = () => {
       };
 
       const response = await axios.put(`${UPDATE_URL}`, userDetails, config);
-
-      console.log(response.data);
       alert("Profile updated successfully!");
-      // logout();
       navigate("/");
     } catch (error) {
       // Handle error response

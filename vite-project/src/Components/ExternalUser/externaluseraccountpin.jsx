@@ -4,8 +4,12 @@ import Dashboard from "../Dashboard/dashboard";
 import axios from "axios";
 import Cookies from "js-cookie";
 import CSRFToken from "../CSRFToken/CSRFToken";
+import { useNavigate } from "react-router-dom";
 
 let UPDATE_URL = "http://localhost:8000/externaluser/setaccountpin";
+let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let isAuthenticated = false;
+let firstload = true;
 
 const ExternalUserAccountPin = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -16,6 +20,38 @@ const ExternalUserAccountPin = () => {
       clearTimeout(timerId.current);
     }
   };
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      try {
+        const response = await axios.get(ISAUTHENTICATED, config);
+        if (response.data.error || response.data.isAuthenticated === "error") {
+          alert("You need to login to access this page");
+          navigate("/");
+        } else if (response.data.isAuthenticated === "success") {
+          isAuthenticated = true;
+        } else {
+          alert("Something went wrong");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (firstload) {
+      fetchData();
+      firstload = false;
+    }
+  }, []);
 
   useEffect(() => {
     return clearErrorMessageTimeout;

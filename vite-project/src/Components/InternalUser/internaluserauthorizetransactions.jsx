@@ -2,14 +2,48 @@ import "./internaluserauthorizetransactions.scss";
 import Dashboard from "../Dashboard/dashboard";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+
+let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let isAuthenticated = false;
 let firstload = true;
 
 const InternalUserAuthorizeTransactions = () => {
   const [transactions, setTransactions] = useState([]);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      try {
+        const response = await axios.get(ISAUTHENTICATED, config);
+        if (response.data.error || response.data.isAuthenticated === "error") {
+          alert("You need to login to access this page");
+          navigate("/");
+        } else if (response.data.isAuthenticated === "success") {
+          isAuthenticated = true;
+        } else {
+          alert("Something went wrong");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (firstload) {
+      fetchData();
+      firstload = false;
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,13 +55,11 @@ const InternalUserAuthorizeTransactions = () => {
           "X-CSRFToken": Cookies.get("csrftoken"),
         },
       };
-      console.log("Config", config);
       try {
         const response = await axios.get(
           "http://localhost:8000/externaluser/transactionhistory",
           config
         );
-        console.log(response.data);
         setTransactions(response.data);
       } catch (err) {
         console.log(err);

@@ -22,7 +22,6 @@ const TwoFactorAuth = () => {
         })
         .then(
           (response) => {
-            console.log(response);
             if (response.status === 200) {
               setQrCodeUrl(response.data.qrCode);
             } else {
@@ -51,7 +50,6 @@ const TwoFactorAuth = () => {
       })
       .then(
         (response) => {
-          console.log(response);
           if (response.status === 200) {
             alert(`2FA successful`);
             onVerifySuccess();
@@ -79,7 +77,6 @@ const TwoFactorAuth = () => {
         "X-CSRFToken": Cookies.get("csrftoken"),
       },
     };
-    console.log("Config", config);
     let data = {
       user_name: username,
       password: password,
@@ -95,7 +92,6 @@ const TwoFactorAuth = () => {
 
       if (response.status === 200) {
         alert(`Login successful`);
-        console.log(response.data);
 
         // Redirect or navigate user to the appropriate page
         navigate({
@@ -106,7 +102,6 @@ const TwoFactorAuth = () => {
         alert(`Login failed. Please check your information and try again`);
       }
     } catch (err) {
-      console.log(err);
       alert(`Login failed. Please check your information and try again`);
     }
 

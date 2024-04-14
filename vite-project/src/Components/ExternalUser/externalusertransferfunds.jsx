@@ -6,11 +6,49 @@ import SetPinModal from "../Modal/SetPinModal";
 import axios from "axios";
 import Cookies from "js-cookie";
 import CSRFToken from "../CSRFToken/CSRFToken";
+import { useNavigate } from "react-router-dom";
+
+let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let isAuthenticated = false;
+let firstload = true;
 
 const ExternalUserTransferFunds = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSetPinModalOpen, setIsSetPinModalOpen] = useState(false);
   const [formData, setFormData] = useState({});
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      try {
+        const response = await axios.get(ISAUTHENTICATED, config);
+        if (response.data.error || response.data.isAuthenticated === "error") {
+          alert("You need to login to access this page");
+          navigate("/");
+        } else if (response.data.isAuthenticated === "success") {
+          isAuthenticated = true;
+        } else {
+          alert("Something went wrong");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (firstload) {
+      fetchData();
+      firstload = false;
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +70,6 @@ const ExternalUserTransferFunds = () => {
           response.status === 200 &&
           response.data.message === "Account pin is set"
         ) {
-          console.log(response.data);
           setIsSetPinModalOpen(false);
         } else {
           setIsSetPinModalOpen(true);

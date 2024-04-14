@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 const VIEW_PROFILE_URL = "http://localhost:8000/viewalluserprofiles";
 const DELETE_ACCOUNT_URL = "http://localhost:8000/internaluser/deleteaccount";
+
+let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let isAuthenticated = false;
 let firstload = true;
 
 const InternalUserViewUserProfiles = () => {
@@ -22,13 +25,43 @@ const InternalUserViewUserProfiles = () => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+        },
+      };
+
+      try {
+        const response = await axios.get(ISAUTHENTICATED, config);
+        if (response.data.error || response.data.isAuthenticated === "error") {
+          alert("You need to login to access this page");
+          navigate("/");
+        } else if (response.data.isAuthenticated === "success") {
+          isAuthenticated = true;
+        } else {
+          alert("Something went wrong");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (firstload) {
+      fetchData();
+      firstload = false;
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
           "X-CSRFToken": Cookies.get("csrftoken"),
         },
       };
 
       try {
         const response = await axios.get(VIEW_PROFILE_URL, config);
-        console.log(response.data);
         setUserData(response.data.profile);
       } catch (error) {
         console.error("Error fetching data:", error);
