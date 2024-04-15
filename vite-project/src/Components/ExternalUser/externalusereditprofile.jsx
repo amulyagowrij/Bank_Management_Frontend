@@ -6,9 +6,14 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import CSRFToken from "../CSRFToken/CSRFToken";
 
-let UPDATE_URL = "http://localhost:8000/externaluser/updateprofile";
-let VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
-let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+// let UPDATE_URL = "http://localhost:8000/externaluser/updateprofile";
+let UPDATE_URL = "https://156.56.103.251:8000/externaluser/updateprofile";
+// let VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
+let VIEW_PROFILE_URL = "https://156.56.103.251:8000/viewuserprofiles";
+
+let ISAUTHENTICATED = "https://156.56.103.251:8000/authenticated";
+// let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+
 let isAuthenticated = false;
 let firstload = true;
 
@@ -102,7 +107,7 @@ const ExternalUserEditProfile = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:8000/logout`,
+        `https://156.56.103.251:8000/logout`,
         body,
         config
       );

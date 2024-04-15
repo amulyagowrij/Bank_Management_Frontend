@@ -6,8 +6,10 @@ import Cookies from "js-cookie";
 import CSRFToken from "../CSRFToken/CSRFToken";
 import { useNavigate } from "react-router-dom";
 
-let UPDATE_URL = "http://localhost:8000/externaluser/setaccountpin";
-let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+// let UPDATE_URL = "http://localhost:8000/externaluser/setaccountpin";
+let UPDATE_URL = "https://156.56.103.251:8000/externaluser/setaccountpin";
+// let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let ISAUTHENTICATED = "https://156.56.103.251:8000/authenticated";
 let isAuthenticated = false;
 let firstload = true;
 

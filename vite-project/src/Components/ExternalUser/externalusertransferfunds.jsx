@@ -8,7 +8,9 @@ import Cookies from "js-cookie";
 import CSRFToken from "../CSRFToken/CSRFToken";
 import { useNavigate } from "react-router-dom";
 
-let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+// let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let ISAUTHENTICATED = "https://156.56.103.251:8000/authenticated";
+
 let isAuthenticated = false;
 let firstload = true;
 
@@ -62,7 +64,7 @@ const ExternalUserTransferFunds = () => {
       };
       try {
         const response = await axios.get(
-          `http://localhost:8000/externaluser/viewaccountpin`,
+          `https://156.56.103.251:8000/externaluser/viewaccountpin`,
           config
         );
 
@@ -111,7 +113,7 @@ const ExternalUserTransferFunds = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/externaluser/transferfunds`,
+        `https://156.56.103.251:8000/externaluser/transferfunds`,
         formdata,
         config
       );

@@ -7,8 +7,12 @@ import Dashboard from "../Dashboard/dashboard";
 import "./internaluserhome.css";
 import Cookies from "js-cookie";
 
-let VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
-let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+// let VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
+let VIEW_PROFILE_URL = "https://156.56.103.251:8000/viewuserprofiles";
+
+// let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let ISAUTHENTICATED = "https://156.56.103.251:8000/authenticated";
+
 let isAuthenticated = false;
 let firstload = true;
 

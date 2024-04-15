@@ -5,7 +5,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+// let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let ISAUTHENTICATED = "https://156.56.103.251:8000/authenticated";
+
 let isAuthenticated = false;
 let firstload = true;
 
@@ -57,7 +59,7 @@ const ExternalUserTransactionHistory = () => {
       };
       try {
         const response = await axios.get(
-          "http://localhost:8000/externaluser/transactionhistory",
+          "https://156.56.103.251:8000/externaluser/transactionhistory",
           config
         );
         setTransactions(response.data);

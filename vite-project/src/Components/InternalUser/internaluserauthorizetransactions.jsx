@@ -5,7 +5,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+// let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let ISAUTHENTICATED = "https://156.56.103.251:8000/authenticated";
+
 let isAuthenticated = false;
 let firstload = true;
 
@@ -57,7 +59,7 @@ const InternalUserAuthorizeTransactions = () => {
       };
       try {
         const response = await axios.get(
-          "http://localhost:8000/externaluser/transactionhistory",
+          "https://156.56.103.251:8000/externaluser/transactionhistory",
           config
         );
         setTransactions(response.data);
@@ -109,7 +111,7 @@ const InternalUserAuthorizeTransactions = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/internaluser/authorizetransaction/${transaction_id}`,
+        `https://156.56.103.251:8000/internaluser/authorizetransaction/${transaction_id}`,
         updateDetails,
         config
       );
