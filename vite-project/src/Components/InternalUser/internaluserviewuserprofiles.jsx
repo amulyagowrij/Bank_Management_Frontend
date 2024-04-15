@@ -4,8 +4,21 @@ import "./internaluserviewuserprofiles.scss";
 import Dashboard from "../Dashboard/dashboard";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-const VIEW_PROFILE_URL = "http://localhost:8000/viewalluserprofiles";
-const DELETE_ACCOUNT_URL = "http://localhost:8000/internaluser/deleteaccount";
+
+// let VIEW_ALL_PROFILE_URL = "http://localhost:8000/viewalluserprofiles";
+let VIEW_ALL_PROFILE_URL = "https://156.56.103.251:8000/viewalluserprofiles";
+
+// let DELETE_ACCOUNT_URL = "http://localhost:8000/internaluser/deleteaccount";
+let DELETE_ACCOUNT_URL =
+  "https://156.56.103.251:8000/internaluser/deleteaccount";
+
+// let VIEW_PROFILE_URL = "http://localhost:8000/viewuserprofiles";
+let VIEW_PROFILE_URL = "https://156.56.103.251:8000/viewuserprofiles";
+
+// let ISAUTHENTICATED = "http://localhost:8000/authenticated";
+let ISAUTHENTICATED = "https://156.56.103.251:8000/authenticated";
+
+let isAuthenticated = false;
 let firstload = true;
 
 const InternalUserViewUserProfiles = () => {
@@ -28,8 +41,14 @@ const InternalUserViewUserProfiles = () => {
 
       try {
         const response = await axios.get(VIEW_PROFILE_URL, config);
-        console.log(response.data);
-        setUserData(response.data.profile);
+        const user = response.data.profile;
+        if (user.user_role != "System Admin") {
+          alert("You dont have permission to view this page");
+          navigate("/internaluser");
+        }
+        setUserData({
+          user_role: user.user_role,
+        });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -38,16 +57,60 @@ const InternalUserViewUserProfiles = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   if (firstload) {
-  //     firstload = false;
-  //     if (sessionStorage.getItem("name") === null) {
-  //       alert("You need to log in to access this page");
-  //       sessionStorage.clear();
-  //       navigate("../");
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      try {
+        const response = await axios.get(ISAUTHENTICATED, config);
+        if (response.data.error || response.data.isAuthenticated === "error") {
+          alert("You need to login to access this page");
+          navigate("/");
+        } else if (response.data.isAuthenticated === "success") {
+          isAuthenticated = true;
+        } else {
+          alert("Something went wrong");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (firstload) {
+      fetchData();
+      firstload = false;
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": Cookies.get("csrftoken"),
+        },
+      };
+
+      try {
+        const response = await axios.get(VIEW_ALL_PROFILE_URL, config);
+        let users = response.data.profile;
+        users = users.filter((user) => user.user_type === "External");
+        setUserData(users);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const viewRecord = (user_id) => {
     const user = user_data.find((user) => user.id === user_id);
@@ -81,21 +144,6 @@ const InternalUserViewUserProfiles = () => {
       console.error("There was an error deleting the account!", error);
     }
   };
-  //   console.log("Deleting record with user_id:", user_id);
-  //   axios
-  //     .delete(`${DELETE_ACCOUNT_URL}/${user_id}`)
-  //     .then((response) => {
-  //       if (response.status === 204) {
-  //         alert("Account deleted successfully");
-  //         setUserData((prevUserData) =>
-  //           prevUserData.filter((account) => account.user_id !== user_id)
-  //         );
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("There was an error deleting the account!", error);
-  //     });
-  // };
 
   return (
     <>

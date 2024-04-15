@@ -4,7 +4,8 @@ import { useState } from "react";
 import axios from "axios";
 import CSRFToken from "../CSRFToken/CSRFToken";
 
-let REGISTRATION_URL = "http://localhost:8000/registration";
+// let REGISTRATION_URL = "http://localhost:8000/registration";
+let REGISTRATION_URL = "https://156.56.103.251:8000/registration";
 
 const Registration = () => {
   const [userName, setUserName] = useState("");
@@ -12,7 +13,7 @@ const Registration = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [userType, setUserType] = useState("");
+  const [userType, setUserType] = useState("External");
   const [roleType, setRoleType] = useState("");
 
   const navigate = useNavigate();
@@ -58,7 +59,6 @@ const Registration = () => {
       })
       .then(
         (response) => {
-          console.log(response);
           if (response.status === 200) {
             alert(`Email sent for verification. Please check your email.`);
             navigate("/verify-email", {
@@ -84,39 +84,6 @@ const Registration = () => {
           );
         }
       );
-    // send data to backend, give confirmation if successful, and return to login page
-    // await axios({
-    //   method: "post",
-    //   url: REGISTRATION_URL,
-    //   data: {
-    //     name: userName,
-    //     user_name: user_userName,
-    //     email: userEmail,
-    //     user_role: roleType,
-    //     user_type: userType,
-    //     password: userPassword,
-    //   },
-    // }).then(
-    //   (response) => {
-    //     console.log(response);
-    //     if (response.status === 201) {
-    //       alert(`Registration successful`);
-    //       navigate("/");
-    //     } else {
-    //       alert(
-    //         `Registration failed. There was an error saving the user. Please try again`
-    //       );
-    //     }
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //     alert(
-    //       `Registration failed. There was an error saving the user. Please try again`
-    //     );
-    //   }
-    // );
-
-    console.log(userType, roleType, userName, userPassword);
   };
 
   // Password validation function
@@ -138,7 +105,7 @@ const Registration = () => {
           >
             <CSRFToken />
             <div>
-              <select
+              {/* <select
                 value={userType}
                 className="user-dropdown"
                 onChange={(e) => setUserType(e.target.value)}
@@ -146,7 +113,7 @@ const Registration = () => {
                 <option value="">Select User Type</option>
                 <option value="Internal">Internal</option>
                 <option value="External">External</option>
-              </select>
+              </select> */}
 
               {userType && (
                 <select

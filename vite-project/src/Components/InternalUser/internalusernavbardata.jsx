@@ -22,10 +22,4 @@ export const InternalUserNavbarData = [
     icon: <AiIcons.AiFillHome />,
     class: "nav-text",
   },
-  {
-    title: "Home",
-    path: "/internaluser",
-    icon: <AiIcons.AiFillHome />,
-    class: "nav-text",
-  },
 ];

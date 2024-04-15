@@ -30,7 +30,7 @@ const VerifyEmail = () => {
     let data = user;
     try {
       const response = await axios.post(
-        `http://localhost:8000/registration`,
+        `https://156.56.103.251:8000/registration`,
         data,
         config
       );
